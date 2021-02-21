@@ -1,6 +1,6 @@
 main: radWorld.Main
 name: RadWorld
-version: 0.2-Dev
+version: 0.2
 api-version: 1.16
 author: Platratio34
 commands:
