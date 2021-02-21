@@ -1,0 +1,5 @@
+radMultip: 1
+recoveryRate: 120
+maxPen: 30
+protLvl: 0.8
+dmgEnb: false

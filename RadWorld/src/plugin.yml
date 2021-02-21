@@ -1,0 +1,8 @@
+main: radWorld.Main
+name: RadWorld
+version: 0.2-Dev
+api-version: 1.16
+author: Platratio34
+commands:
+  rads:
+    usage: /rads player <add|remove|level|set|enabled> [player] {arg} | /rads global <damage|recovery|radMultip> {arg} | /rads disable <true|false>
