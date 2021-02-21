@@ -134,7 +134,7 @@ public class Commands implements CommandExecutor {
 							sender.sendMessage(s);
 							return true;
 						} else {
-							sender.sendMessage("Invalid second argument | damage, recovery, radMultip");
+							sender.sendMessage("Invalid second argument | damage, recovery, radMultip, armorProt");
 							return false;
 						}
 					}
