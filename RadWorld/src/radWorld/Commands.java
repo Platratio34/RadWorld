@@ -29,6 +29,14 @@ public class Commands implements CommandExecutor {
 					sender.sendMessage("Incorrect number of arguments");
 					return false;
 				}
+			} else if(args[0].equals("version") ) {
+				if(args.length == 1) {
+					sender.sendMessage("Rad World version: " + main.getVerison() );
+					return true;
+				} else {
+					sender.sendMessage("Incorrect number of arguments");
+					return false;
+				}
 			} else if(args[0].equals("player") ) {
 				if(args.length >= 3) {
 					if(args[1].equals("add") ) {

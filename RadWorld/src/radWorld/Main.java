@@ -33,6 +33,7 @@ public class Main extends JavaPlugin {
 
 	private BukkitScheduler scheduler;
 	private FileConfiguration config;
+	private PluginDescriptionFile pdf;
 	
 	public Logger log;
 	
@@ -103,7 +104,7 @@ public class Main extends JavaPlugin {
 			}
 		}
 		scheduler = this.getServer().getScheduler();
-		PluginDescriptionFile pdf = this.getDescription();
+		pdf = this.getDescription();
 		if(pdf.getVersion().contains("-Dev")) {
 			log.warning("You are running a dev version of this plugin");
 			dev = true;
@@ -391,5 +392,9 @@ public class Main extends JavaPlugin {
 		if(!b) {
 			updateRad(0);
 		}
+	}
+	
+	public String getVerison() {
+		return pdf.getVersion();
 	}
 }
