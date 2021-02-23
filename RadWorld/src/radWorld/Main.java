@@ -195,19 +195,21 @@ public class Main extends JavaPlugin {
 				} else {
 					p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText( radLvsb[(int) rp.inc] + "  | " + dps + " |  " + radLvs2[(int) Math.min(Math.ceil(rp.lvl / (2 * maxPen) ), radLvs2.length-1 ) ] + " | " + (int)(Math.max(rp.inc - (maxPen / (1/protLvl)), 0f)  * radMultip) + " r/s | " + (int)rp.lvl + " rads" ) );
 				}
+				
+				PlayerInventory pI = p.getInventory();
+				boolean prot = true;
+				if(pI.getBoots() == null || pI.getBoots().getType() != Material.NETHERITE_BOOTS) {
+					prot = false;
+				} else if(pI.getLeggings() == null || pI.getLeggings().getType() != Material.NETHERITE_LEGGINGS) {
+					prot = false;
+				} else if(pI.getChestplate() == null || pI.getChestplate().getType() != Material.NETHERITE_CHESTPLATE) {
+					prot = false;
+				} else if(pI.getHelmet() == null || pI.getHelmet().getType() != Material.NETHERITE_HELMET) {
+					prot = false;
+				}
+				rp.prot = prot;
+				
 			}
-			PlayerInventory pI = p.getInventory();
-			boolean prot = true;
-			if(pI.getBoots() == null || pI.getBoots().getType() != Material.NETHERITE_BOOTS) {
-				prot = false;
-			} else if(pI.getLeggings() == null || pI.getLeggings().getType() != Material.NETHERITE_LEGGINGS) {
-				prot = false;
-			} else if(pI.getChestplate() == null || pI.getChestplate().getType() != Material.NETHERITE_CHESTPLATE) {
-				prot = false;
-			} else if(pI.getHelmet() == null || pI.getHelmet().getType() != Material.NETHERITE_HELMET) {
-				prot = false;
-			}
-			rp.prot = prot;
 				
 		}
 		
