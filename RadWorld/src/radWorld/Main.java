@@ -198,13 +198,13 @@ public class Main extends JavaPlugin {
 			}
 			PlayerInventory pI = p.getInventory();
 			boolean prot = true;
-			if(pI.getBoots().getType() != Material.NETHERITE_BOOTS) {
+			if(pI.getBoots() == null || pI.getBoots().getType() != Material.NETHERITE_BOOTS) {
 				prot = false;
-			} else if(pI.getLeggings().getType() != Material.NETHERITE_LEGGINGS) {
+			} else if(pI.getLeggings() == null || pI.getLeggings().getType() != Material.NETHERITE_LEGGINGS) {
 				prot = false;
-			} else if(pI.getChestplate().getType() != Material.NETHERITE_CHESTPLATE) {
+			} else if(pI.getChestplate() == null || pI.getChestplate().getType() != Material.NETHERITE_CHESTPLATE) {
 				prot = false;
-			} else if(pI.getHelmet().getType() != Material.NETHERITE_HELMET) {
+			} else if(pI.getHelmet() == null || pI.getHelmet().getType() != Material.NETHERITE_HELMET) {
 				prot = false;
 			}
 			rp.prot = prot;
