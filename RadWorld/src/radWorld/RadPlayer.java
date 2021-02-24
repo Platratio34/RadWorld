@@ -6,6 +6,7 @@ public class RadPlayer {
 	public float lvl;
 	public boolean enb;
 	public boolean prot;
+	private int dim = 0;
 	
 	public RadPlayer() {
 		inc = 0f;
@@ -18,5 +19,15 @@ public class RadPlayer {
 		this.lvl = lvl;
 		this.enb = enb;
 		this.prot = prot;
+	}
+	
+	public void setDim(int d) {
+		if(dim != d) {
+			Main.log.info("Player moved to dim " + d);
+		}
+		dim = d;
+	}
+	public int getDim() {
+		return dim;
 	}
 }

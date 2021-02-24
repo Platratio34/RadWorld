@@ -35,7 +35,7 @@ public class Main extends JavaPlugin {
 	private FileConfiguration config;
 	private PluginDescriptionFile pdf;
 	
-	public Logger log;
+	public static Logger log;
 	
 	private float radMultip = 1;
 	private float recoveryRate = 60;
@@ -178,22 +178,28 @@ public class Main extends JavaPlugin {
 			}
 			Player p = getPlayer(id);
 			if(p != null) {
-				if(worldName == "") {
-					worldName = p.getWorld().getName();
-				}
-				if(s == 0 || s == 4) {
-					if(dps == 0.5) {
-						if(s == 0) {
-							damgePlayer(p,1f);
+				if(!(p.getWorld().getName().contains("_nether") || p.getWorld().getName().contains("_the_end") ) ) {
+					rp.setDim(0);
+					if(s == 0 || s == 4) {
+						if(dps == 0.5) {
+							if(s == 0) {
+								damgePlayer(p,1f);
+							}
+						} else {
+							damgePlayer(p,dps);
 						}
-					} else {
-						damgePlayer(p,dps);
 					}
-				}
-				if(!rp.prot) {
-					p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText( radLvs[(int) rp.inc] + "  | " + dps + " |  " + radLvs2[(int) Math.min(Math.ceil(rp.lvl / (2 * maxPen) ), radLvs2.length-1 ) ] + " | " + (int)(rp.inc * radMultip) + " r/s | " + (int)rp.lvl + " rads" ) );
+					if(!rp.prot) {
+						p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText( radLvs[(int) rp.inc] + "  | " + dps + " |  " + radLvs2[(int) Math.min(Math.ceil(rp.lvl / (2 * maxPen) ), radLvs2.length-1 ) ] + " | " + (int)(rp.inc * radMultip) + " r/s | " + (int)rp.lvl + " rads" ) );
+					} else {
+						p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText( radLvsb[(int) rp.inc] + "  | " + dps + " |  " + radLvs2[(int) Math.min(Math.ceil(rp.lvl / (2 * maxPen) ), radLvs2.length-1 ) ] + " | " + (int)(Math.max(rp.inc - (maxPen / (1/protLvl)), 0f)  * radMultip) + " r/s | " + (int)rp.lvl + " rads" ) );
+					}
 				} else {
-					p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText( radLvsb[(int) rp.inc] + "  | " + dps + " |  " + radLvs2[(int) Math.min(Math.ceil(rp.lvl / (2 * maxPen) ), radLvs2.length-1 ) ] + " | " + (int)(Math.max(rp.inc - (maxPen / (1/protLvl)), 0f)  * radMultip) + " r/s | " + (int)rp.lvl + " rads" ) );
+					if(p.getWorld().getName().contains("_nether")) {
+						rp.setDim(-1);
+					} else {
+						rp.setDim(1);
+					}
 				}
 				
 				PlayerInventory pI = p.getInventory();
