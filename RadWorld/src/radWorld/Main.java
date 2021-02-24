@@ -156,8 +156,13 @@ public class Main extends JavaPlugin {
 			RadPlayer rp = entry.getValue();
 
 			if(rp.enb) {
-				if(Math.max(rp.inc - (maxPen / (1/protLvl)), 0f) > 0) {
-					rp.lvl += (Math.max(rp.inc - (maxPen / (1/protLvl)), 0f) / 4) * radMultip;
+				float inc = rp.inc;
+				if(rp.prot) {
+					inc -= maxPen / (1/protLvl);
+				}
+				inc = Math.max(inc, 0f);
+				if(inc > 0) {
+					rp.lvl += (inc / 4) * radMultip;
 				} else {
 					rp.lvl -= recoveryRate / 4;
 				}
