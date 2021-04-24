@@ -1,5 +1,8 @@
 package radWorld;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,45 +22,61 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command com, String lable, String[] args) {
 		List<String> l = new ArrayList<String>();
-		if(args.length == 1) {
-			l.add("player");
-			l.add("global");
-			l.add("disable");
-			l.add("version");
-			l.add("reload");
-			return fix(l, args[args.length - 1]);
-		} else if(args.length == 2 && args[0].equals("player")) {
-			l.add("add");
-			l.add("remove");
-			l.add("level");
-			l.add("set");
-			l.add("enabled");
-			return fix(l, args[args.length - 1]);
-		} else if(args.length == 2 && args[0].equals("global")) {
-			l.add("damage");
-			l.add("recovery");
-			l.add("radMultip");
-			l.add("armorProt");
-			return fix(l, args[args.length - 1]);
-		} else if(args.length == 3 && args[0].equals("player")) {
-			if(args[1].equals("add") ) {
-				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-		            l.add(p.getName());
-		        }
-			} else {
-				for (String str : main.getPlayers()) {
-					l.add(str);
+		try {
+			if(args.length == 1) {
+				l.add("player");
+				l.add("global");
+				l.add("disable");
+				l.add("version");
+				l.add("reload");
+				return fix(l, args[args.length - 1]);
+			} else if(args.length == 2) {
+				if(args[0].equals("player")) {
+					l.add("add");
+					l.add("remove");
+					l.add("level");
+					l.add("set");
+					l.add("enabled");
+					return fix(l, args[args.length - 1]);
+				} else if(args[0].equals("global")) {
+					l.add("damage");
+					l.add("recovery");
+					l.add("radMultip");
+					l.add("armorProt");
+					return fix(l, args[args.length - 1]);
+				} else if(args[0].equals("disable")) {
+					l.add("true");
+					l.add("false");
+					return fix(l, args[args.length - 1]);
+				}
+			} else if(args.length == 3) {
+				if(args[0].equals("player")) {
+					if(args[1].equals("add") ) {
+						for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+				            l.add(p.getName());
+				        }
+					} else {
+						for (String str : main.getPlayers()) {
+							l.add(str);
+						}
+					}
+					return fix(l, args[args.length - 1]);
+				} else if(args[1].equals("damage") && args[0].equals("global")) {
+					l.add("true");
+					l.add("false");
+					return fix(l, args[args.length - 1]);
 				}
 			}
-			return fix(l, args[args.length - 1]);
-		} else if(args.length == 3 && args[1].equals("damage") && args[0].equals("global")) {
-			l.add("true");
-			l.add("false");
-			return fix(l, args[args.length - 1]);
-		} else if(args.length == 2 && args[0].equals("disable")) {
-			l.add("true");
-			l.add("false");
-			return fix(l, args[args.length - 1]);
+		} catch (Exception e) {
+			File f = new File(main.dataFolder, "TabCompleaterLog.log");
+			PrintStream ps;
+			try {
+				ps = new PrintStream(f);
+				e.printStackTrace(ps);
+				ps.close();
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			}
 		}
 		return l;
 	}

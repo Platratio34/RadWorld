@@ -54,6 +54,8 @@ public class Main extends JavaPlugin {
 	private boolean dissabled = true;
 	private boolean enableSave = false;
 	
+	public File dataFolder;
+	
 	private String worldName;
 	File worldConfigFile;
 	
@@ -64,6 +66,7 @@ public class Main extends JavaPlugin {
 		radPlayers = new HashMap<String, RadPlayer>();
 		
 		worldName = getServer().getWorlds().get(0).getName();
+		dataFolder = getDataFolder();
 //		log.info(worldName);
 //		log.info(getServer().getWorlds().size() + "");
 //		log.info(getServer().getWorlds().get(0).getName());
@@ -122,7 +125,7 @@ public class Main extends JavaPlugin {
 			cSp.set("lvl", entry.getValue().lvl);
 			cSp.set("enb", entry.getValue().enb);
 		}
-		if(!dissabled) {
+		if(enableSave) {
 			try {
 				config.save(worldConfigFile);
 			} catch (IOException e) {
@@ -416,7 +419,7 @@ public class Main extends JavaPlugin {
 	public void reloadConfig() {
 		config = getConfig();
 		
-		worldConfigFile = new File(getDataFolder(), worldName + ".yml");
+		worldConfigFile = new File(dataFolder, worldName + ".yml");
 		if(worldConfigFile.exists()) {
 			config = YamlConfiguration.loadConfiguration(worldConfigFile);
 			enableSave = true;
