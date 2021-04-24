@@ -5,4 +5,4 @@ api-version: 1.16
 author: Platratio34
 commands:
   rads:
-    usage: /rads player <add|remove|level|set|enabled> [player] {arg} | /rads global <damage|recovery|radMultip> [value] | /rads disable <true|false> | /rads version
+    usage: /rads player <add|remove|level|set|enabled> [player] {arg} | /rads global <damage|recovery|radMultip> [value] | /rads disable <true|false> | /rads version | /rads reload

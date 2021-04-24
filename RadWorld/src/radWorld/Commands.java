@@ -37,6 +37,15 @@ public class Commands implements CommandExecutor {
 					sender.sendMessage("Incorrect number of arguments");
 					return false;
 				}
+			} else if(args[0].equals("Reload") ) {
+				if(args.length == 1) {
+					sender.sendMessage("Reloading Configuration file");
+					main.reloadConfig();
+					return true;
+				} else {
+					sender.sendMessage("Incorrect number of arguments");
+					return false;
+				}
 			} else if(args[0].equals("player") ) {
 				if(args.length >= 3) {
 					if(args[1].equals("add") ) {
@@ -127,7 +136,11 @@ public class Commands implements CommandExecutor {
 					if(args[1].equals("damage")) {
 						boolean v = Boolean.parseBoolean(args[2]);
 						main.setDmgEnb(v);
-						sender.sendMessage("Damage enabled set to " + v);
+						if(v) {
+							sender.sendMessage("Damage enabled");
+						} else {
+							sender.sendMessage("Damage disabled");
+						}
 						return true;
 					} else {
 						float v = 0;

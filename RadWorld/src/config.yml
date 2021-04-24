@@ -3,3 +3,7 @@ recoveryRate: 120
 maxPen: 30
 protLvl: 0.8
 dmgEnb: false
+changedblocks:
+    WATER: 2
+    NETHERITE_BLOCK: 5
+    IRON_BLOCK: 3

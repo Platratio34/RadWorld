@@ -69,26 +69,7 @@ public class Main extends JavaPlugin {
 //		log.info(getServer().getWorlds().get(1).getName());
 //		log.info(getServer().getWorlds().get(2).getName());
 		
-		config = getConfig();
-		
-		
-		worldConfigFile = new File(getDataFolder(), worldName + ".yml");
-		if(worldConfigFile.exists()) {
-			config = YamlConfiguration.loadConfiguration(worldConfigFile);
-		} else {
-			log.info("Config for world " + worldName + " didn't exist, creating it now");
-		}
-		
-		Reader defConfigStream;
-		try {
-			defConfigStream = new InputStreamReader(this.getResource("config.yml"), "UTF8");
-		    if (defConfigStream != null) {
-		        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-		        config.setDefaults(defConfig);
-		    }
-		} catch (UnsupportedEncodingException e) {
-			log.warning("Failed to load default config");
-		}
+		reloadConfig();
 		
 		radMultip = (float) config.getDouble("radMultip");
 		recoveryRate = (float) config.getDouble("recoveryRate");
@@ -420,5 +401,31 @@ public class Main extends JavaPlugin {
 	
 	public String getVerison() {
 		return pdf.getVersion();
+	}
+	
+	public FileConfiguration getConfig() {
+		return config;
+	}
+	
+	public void reloadConfig() {
+		config = getConfig();
+		
+		worldConfigFile = new File(getDataFolder(), worldName + ".yml");
+		if(worldConfigFile.exists()) {
+			config = YamlConfiguration.loadConfiguration(worldConfigFile);
+		} else {
+			log.info("Config for world " + worldName + " didn't exist, creating it now");
+		}
+		
+		Reader defConfigStream;
+		try {
+			defConfigStream = new InputStreamReader(this.getResource("config.yml"), "UTF8");
+		    if (defConfigStream != null) {
+		        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+		        config.setDefaults(defConfig);
+		    }
+		} catch (UnsupportedEncodingException e) {
+			log.warning("Failed to load default config");
+		}
 	}
 }

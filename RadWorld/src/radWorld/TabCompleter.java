@@ -23,6 +23,8 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
 			l.add("player");
 			l.add("global");
 			l.add("disable");
+			l.add("version");
+			l.add("reload");
 			return fix(l, args[args.length - 1]);
 		} else if(args.length == 2 && args[0].equals("player")) {
 			l.add("add");

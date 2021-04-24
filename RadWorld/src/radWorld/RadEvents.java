@@ -3,6 +3,8 @@ package radWorld;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -23,19 +25,23 @@ public Main main;
 		Player p = e.getPlayer();
 		Location l = p.getLocation();
 		int rads = main.maxPen;
-		for(int i = l.getBlockY() + 2; i < 100; i++) {
+		FileConfiguration config = main.getConfig();
+		ConfigurationSection cS = null;
+		if(config.contains("changedblocks")) {
+			config.getConfigurationSection("changedblocks");
+		}
+		for(int i = l.getBlockY() + 2; i < l.getBlockY() + 100; i++) {
 			Location l2 = new Location(l.getWorld(), l.getX(), i, l.getZ());
 			Block b = l2.getBlock();
 			Material t = b.getType();
 			if(!b.isPassable()) {
-				if(t == Material.WATER) {
-					rads--;
-				} else if(t == Material.NETHERITE_BLOCK) {
-					rads -= 4;
-				} else if(t == Material.IRON_BLOCK) {
-					rads -= 2;
+				if(cS != null) {
+					if(cS.contains(t + "")) {
+						rads -= cS.getDouble(t + "");
+					} else {
+						rads--;
+					}
 				}
-				rads--;
 			}
 		}
 
