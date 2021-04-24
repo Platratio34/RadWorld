@@ -68,7 +68,7 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
 				}
 			}
 		} catch (Exception e) {
-			File f = new File(main.dataFolder, "TabCompleaterLog.log");
+			File f = new File(main.dataFolder, "TabCompleaterErrorLog.log");
 			PrintStream ps;
 			try {
 				ps = new PrintStream(f);

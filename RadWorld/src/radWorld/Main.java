@@ -1,8 +1,10 @@
 package radWorld;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -140,88 +142,100 @@ public class Main extends JavaPlugin {
 	private void updateRad(int s) {
 		s %= 8;
 		final int s2 = s + 1;
-		for (Entry<String, RadPlayer> entry : radPlayers.entrySet() ) {
-			String id = entry.getKey();
-			RadPlayer rp = entry.getValue();
-
-			if(rp.enb) {
-				float inc = rp.inc;
-				if(rp.prot) {
-					inc -= maxPen / (1/protLvl);
+		try {
+			for (Entry<String, RadPlayer> entry : radPlayers.entrySet() ) {
+				String id = entry.getKey();
+				RadPlayer rp = entry.getValue();
+	
+				if(rp.enb) {
+					float inc = rp.inc;
+					if(rp.prot) {
+						inc -= maxPen / (1/protLvl);
+					}
+					inc = Math.max(inc, 0f);
+					if(inc > 0) {
+						rp.lvl += (inc / 4) * radMultip;
+					} else {
+						rp.lvl -= recoveryRate / 4;
+					}
 				}
-				inc = Math.max(inc, 0f);
-				if(inc > 0) {
-					rp.lvl += (inc / 4) * radMultip;
-				} else {
-					rp.lvl -= recoveryRate / 4;
+				rp.lvl = Math.max(0, rp.lvl);
+				rp.lvl = Math.min(maxPen * maxPen * 2, rp.lvl);
+				
+				float dps = 0;
+				
+				if(rp.lvl > 8 * maxPen && rp.lvl <= 24 * maxPen) {
+					dps = 0.5f;
+				} else if(rp.lvl > 24 * maxPen && rp.lvl <= 48 * maxPen) {
+					dps = 1;
+				} else if(rp.lvl > 48 * maxPen && rp.lvl < maxPen * maxPen * 2) {
+					dps = 2;
+				} else if(rp.lvl >= maxPen * maxPen * 2){
+					dps = 4;
 				}
-			}
-			rp.lvl = Math.max(0, rp.lvl);
-			rp.lvl = Math.min(maxPen * maxPen * 2, rp.lvl);
-			
-			float dps = 0;
-			
-			if(rp.lvl > 8 * maxPen && rp.lvl <= 24 * maxPen) {
-				dps = 0.5f;
-			} else if(rp.lvl > 24 * maxPen && rp.lvl <= 48 * maxPen) {
-				dps = 1;
-			} else if(rp.lvl > 48 * maxPen && rp.lvl < maxPen * maxPen * 2) {
-				dps = 2;
-			} else if(rp.lvl >= maxPen * maxPen * 2){
-				dps = 4;
-			}
-			Player p = getPlayer(id);
-			if(p != null) {
-				if(!(p.getWorld().getName().contains("_nether") || p.getWorld().getName().contains("_the_end") ) ) {
-					rp.setDim(0);
-					if(s == 0 || s == 4) {
-						if(dps == 0.5) {
-							if(s == 0) {
-								damgePlayer(p,1f);
+				Player p = getPlayer(id);
+				if(p != null) {
+					if(!(p.getWorld().getName().contains("_nether") || p.getWorld().getName().contains("_the_end") ) ) {
+						rp.setDim(0);
+						if(s == 0 || s == 4) {
+							if(dps == 0.5) {
+								if(s == 0) {
+									damgePlayer(p,1f);
+								}
+							} else {
+								damgePlayer(p,dps);
 							}
+						}
+						if(!rp.prot) {
+							p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText( radLvs[(int) rp.inc] + "  | " + dps + " |  " + radLvs2[(int) Math.min(Math.ceil(rp.lvl / (2 * maxPen) ), radLvs2.length-1 ) ] + " | " + (int)(rp.inc * radMultip) + " r/s | " + (int)rp.lvl + " rads" ) );
 						} else {
-							damgePlayer(p,dps);
+							p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText( radLvsb[(int) rp.inc] + "  | " + dps + " |  " + radLvs2[(int) Math.min(Math.ceil(rp.lvl / (2 * maxPen) ), radLvs2.length-1 ) ] + " | " + (int)(Math.max(rp.inc - (maxPen / (1/protLvl)), 0f)  * radMultip) + " r/s | " + (int)rp.lvl + " rads" ) );
+						}
+					} else {
+						if(p.getWorld().getName().contains("_nether")) {
+							rp.setDim(-1);
+						} else {
+							rp.setDim(1);
 						}
 					}
-					if(!rp.prot) {
-						p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText( radLvs[(int) rp.inc] + "  | " + dps + " |  " + radLvs2[(int) Math.min(Math.ceil(rp.lvl / (2 * maxPen) ), radLvs2.length-1 ) ] + " | " + (int)(rp.inc * radMultip) + " r/s | " + (int)rp.lvl + " rads" ) );
-					} else {
-						p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText( radLvsb[(int) rp.inc] + "  | " + dps + " |  " + radLvs2[(int) Math.min(Math.ceil(rp.lvl / (2 * maxPen) ), radLvs2.length-1 ) ] + " | " + (int)(Math.max(rp.inc - (maxPen / (1/protLvl)), 0f)  * radMultip) + " r/s | " + (int)rp.lvl + " rads" ) );
+					
+					PlayerInventory pI = p.getInventory();
+					boolean prot = true;
+					if(pI.getBoots() != null) {
+						if(pI.getBoots().getType() != Material.NETHERITE_BOOTS) {
+							prot = false;
+						}
 					}
-				} else {
-					if(p.getWorld().getName().contains("_nether")) {
-						rp.setDim(-1);
-					} else {
-						rp.setDim(1);
+					if(pI.getLeggings() != null) {
+						if(pI.getLeggings().getType() != Material.NETHERITE_LEGGINGS) {
+							prot = false;
+						}
 					}
+					if(pI.getChestplate() != null) {
+						if(pI.getChestplate().getType() != Material.NETHERITE_CHESTPLATE) {
+							prot = false;
+						}
+					}
+					if(pI.getHelmet() != null) {
+						if(pI.getHelmet().getType() != Material.NETHERITE_HELMET) {
+							prot = false;
+						}
+					}
+					rp.prot = prot;
+					
 				}
-				
-				PlayerInventory pI = p.getInventory();
-				boolean prot = true;
-				if(pI.getBoots() != null) {
-					if(pI.getBoots().getType() != Material.NETHERITE_BOOTS) {
-						prot = false;
-					}
-				}
-				if(pI.getLeggings() != null) {
-					if(pI.getLeggings().getType() != Material.NETHERITE_LEGGINGS) {
-						prot = false;
-					}
-				}
-				if(pI.getChestplate() != null) {
-					if(pI.getChestplate().getType() != Material.NETHERITE_CHESTPLATE) {
-						prot = false;
-					}
-				}
-				if(pI.getHelmet() != null) {
-					if(pI.getHelmet().getType() != Material.NETHERITE_HELMET) {
-						prot = false;
-					}
-				}
-				rp.prot = prot;
-				
+					
 			}
-				
+		} catch (Exception er) {
+			File f = new File(dataFolder, "MainErroLog.log");
+			PrintStream ps;
+			try {
+				ps = new PrintStream(f);
+				er.printStackTrace(ps);
+				ps.close();
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			}
 		}
 		
 		if(!dissabled) {
@@ -412,7 +426,7 @@ public class Main extends JavaPlugin {
 		return pdf.getVersion();
 	}
 	
-	public FileConfiguration getConfig() {
+	public FileConfiguration getWorldConfig() {
 		return config;
 	}
 	
@@ -427,15 +441,24 @@ public class Main extends JavaPlugin {
 			log.info("Config for world " + worldName + " didn't exist, if enbaled, one will be created on plugin dissable");
 		}
 		
-		Reader defConfigStream;
 		try {
-			defConfigStream = new InputStreamReader(this.getResource("config.yml"), "UTF8");
+			Reader defConfigStream = new InputStreamReader(this.getResource("config.yml"), "UTF8");
 		    if (defConfigStream != null) {
 		        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
 		        config.setDefaults(defConfig);
 		    }
 		} catch (UnsupportedEncodingException e) {
 			log.warning("Failed to load default config");
+		} catch (Exception e) {
+			File f = new File(dataFolder, "MainErrorLog.log");
+			PrintStream ps;
+			try {
+				ps = new PrintStream(f);
+				e.printStackTrace(ps);
+				ps.close();
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 }

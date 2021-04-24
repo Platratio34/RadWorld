@@ -1,5 +1,9 @@
 package radWorld;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -22,39 +26,51 @@ public Main main;
 	
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent e) {
-		Player p = e.getPlayer();
-		Location l = p.getLocation();
-		int rads = main.maxPen;
-		FileConfiguration config = main.getConfig();
-		ConfigurationSection cS = null;
-		if(config.contains("changedblocks")) {
-			config.getConfigurationSection("changedblocks");
-		}
-		for(int i = l.getBlockY() + 2; i < l.getBlockY() + 100; i++) {
-			Location l2 = new Location(l.getWorld(), l.getX(), i, l.getZ());
-			Block b = l2.getBlock();
-			Material t = b.getType();
-			if(!b.isPassable()) {
-				if(cS != null) {
-					if(cS.contains(t + "")) {
-						rads -= cS.getDouble(t + "");
-					} else {
-						rads--;
+		try {
+			Player p = e.getPlayer();
+			Location l = p.getLocation();
+			int rads = main.maxPen;
+			FileConfiguration config = main.getWorldConfig();
+			ConfigurationSection cS = null;
+			if(config.contains("changedblocks")) {
+				config.getConfigurationSection("changedblocks");
+			}
+			for(int i = l.getBlockY() + 2; i < l.getBlockY() + 100; i++) {
+				Location l2 = new Location(l.getWorld(), l.getX(), i, l.getZ());
+				Block b = l2.getBlock();
+				Material t = b.getType();
+				if(!b.isPassable()) {
+					if(cS != null) {
+						if(cS.contains(t + "")) {
+							rads -= cS.getDouble(t + "");
+						} else {
+							rads--;
+						}
 					}
 				}
 			}
-		}
-
-		float sunlight_level = l.getBlock().getLightFromSky();
-		sunlight_level /= 15;
-		sunlight_level *= main.maxPen;
-		
-		rads = Math.max(rads, (int)sunlight_level);
-		
-		if(rads > 0) {
-			main.addRad(p, rads);
-		} else {
-			main.removeRad(p);
+	
+			float sunlight_level = l.getBlock().getLightFromSky();
+			sunlight_level /= 15;
+			sunlight_level *= main.maxPen;
+			
+			rads = Math.max(rads, (int)sunlight_level);
+			
+			if(rads > 0) {
+				main.addRad(p, rads);
+			} else {
+				main.removeRad(p);
+			}
+		} catch (Exception er) {
+			File f = new File(main.dataFolder, "RadEventsErroLog.log");
+			PrintStream ps;
+			try {
+				ps = new PrintStream(f);
+				er.printStackTrace(ps);
+				ps.close();
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			}
 		}
     }
 	

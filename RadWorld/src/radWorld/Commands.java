@@ -176,7 +176,7 @@ public class Commands implements CommandExecutor {
 				return false;
 			}
 		} catch (Exception e) {
-			File f = new File(main.dataFolder, "CommandLog.log");
+			File f = new File(main.dataFolder, "CommandErrorLog.log");
 			PrintStream ps;
 			try {
 				ps = new PrintStream(f);
