@@ -52,6 +52,7 @@ public class Main extends JavaPlugin {
 	
 	private boolean dmgEnb = false;
 	private boolean dissabled = true;
+	private boolean enableSave = false;
 	
 	private String worldName;
 	File worldConfigFile;
@@ -121,10 +122,14 @@ public class Main extends JavaPlugin {
 			cSp.set("lvl", entry.getValue().lvl);
 			cSp.set("enb", entry.getValue().enb);
 		}
-		try {
-			config.save(worldConfigFile);
-		} catch (IOException e) {
-			log.warning("Couldn't save config file " + worldName + ".yml");
+		if(!dissabled) {
+			try {
+				config.save(worldConfigFile);
+			} catch (IOException e) {
+				log.warning("Couldn't save configuration file " + worldName + ".yml");
+			}
+		} else {
+			log.info("RadWorld Dissabled, did not save configuration file");
 		}
 //		saveConfig();
 	}
@@ -396,6 +401,7 @@ public class Main extends JavaPlugin {
 		dissabled = b;
 		if(!b) {
 			updateRad(0);
+			enableSave = true;
 		}
 	}
 	
@@ -413,8 +419,9 @@ public class Main extends JavaPlugin {
 		worldConfigFile = new File(getDataFolder(), worldName + ".yml");
 		if(worldConfigFile.exists()) {
 			config = YamlConfiguration.loadConfiguration(worldConfigFile);
+			enableSave = true;
 		} else {
-			log.info("Config for world " + worldName + " didn't exist, creating it now");
+			log.info("Config for world " + worldName + " didn't exist, if enbaled, one will be created on plugin dissable");
 		}
 		
 		Reader defConfigStream;
