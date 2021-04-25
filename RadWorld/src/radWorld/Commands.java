@@ -27,7 +27,11 @@ public class Commands implements CommandExecutor {
 					if(args.length == 2) {
 						boolean v = Boolean.parseBoolean(args[1]);
 						main.setDissabled(v);
-						sender.sendMessage("Rad World dissabled set to " + v);
+						if(v) {
+							sender.sendMessage("Rad World dissabled");
+						} else {
+							sender.sendMessage("Rad World enabled");
+						}
 						return true;
 					} else {
 						sender.sendMessage("Incorrect number of arguments");
@@ -41,10 +45,10 @@ public class Commands implements CommandExecutor {
 						sender.sendMessage("Incorrect number of arguments");
 						return false;
 					}
-				} else if(args[0].equals("Reload") ) {
+				} else if(args[0].equals("reload") ) {
 					if(args.length == 1) {
 						sender.sendMessage("Reloading Configuration file");
-						main.reloadConfig();
+						main.reloadConfigFile();
 						return true;
 					} else {
 						sender.sendMessage("Incorrect number of arguments");
@@ -168,7 +172,7 @@ public class Commands implements CommandExecutor {
 						return false;
 					}
 				} else {
-					sender.sendMessage("Invlaid first argument | player, global");
+					sender.sendMessage("Invlaid first argument | player, global, version, reload");
 					return false;
 				}
 			} else {

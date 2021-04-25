@@ -33,7 +33,7 @@ public Main main;
 			FileConfiguration config = main.getWorldConfig();
 			ConfigurationSection cS = null;
 			if(config.contains("changedblocks")) {
-				config.getConfigurationSection("changedblocks");
+				cS = config.getConfigurationSection("changedblocks");
 			}
 			for(int i = l.getBlockY() + 2; i < l.getBlockY() + 100; i++) {
 				Location l2 = new Location(l.getWorld(), l.getX(), i, l.getZ());
@@ -42,10 +42,13 @@ public Main main;
 				if(!b.isPassable()) {
 					if(cS != null) {
 						if(cS.contains(t + "")) {
-							rads -= cS.getDouble(t + "");
+							rads -= cS.getInt(t + "");
 						} else {
+							main.log(t + "");
 							rads--;
 						}
+					} else {
+						rads--;
 					}
 				}
 			}

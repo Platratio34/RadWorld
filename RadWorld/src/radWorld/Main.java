@@ -38,6 +38,7 @@ public class Main extends JavaPlugin {
 	private PluginDescriptionFile pdf;
 	
 	public static Logger log;
+	public PrintStream log2;
 	
 	private float radMultip = 1;
 	private float recoveryRate = 60;
@@ -63,7 +64,13 @@ public class Main extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
+		dataFolder = getDataFolder();
 		log = super.getLogger();
+		try {
+			log2 = new PrintStream(new File(dataFolder + "log.log"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		
 		radPlayers = new HashMap<String, RadPlayer>();
 		
@@ -75,7 +82,7 @@ public class Main extends JavaPlugin {
 //		log.info(getServer().getWorlds().get(1).getName());
 //		log.info(getServer().getWorlds().get(2).getName());
 		
-		reloadConfig();
+		reloadConfigFile();
 		
 		radMultip = (float) config.getDouble("radMultip");
 		recoveryRate = (float) config.getDouble("recoveryRate");
@@ -114,29 +121,39 @@ public class Main extends JavaPlugin {
 	
 	@Override
 	public void onDisable() {
-		config.set("radMultip", radMultip);
-		config.set("recoveryRate", recoveryRate);
-		config.set("maxPen", maxPen);
-		config.set("protLvl", protLvl);
-		config.set("dmgEnb", dmgEnb);
-		config.set("dissabled", dissabled);
-		ConfigurationSection cS = config.createSection("radPlayers");
-
-		for (Entry<String, RadPlayer> entry : radPlayers.entrySet() ) {
-			ConfigurationSection cSp = cS.createSection(entry.getKey());
-			cSp.set("lvl", entry.getValue().lvl);
-			cSp.set("enb", entry.getValue().enb);
-		}
-		if(enableSave) {
-			try {
-				config.save(worldConfigFile);
-			} catch (IOException e) {
-				log.warning("Couldn't save configuration file " + worldName + ".yml");
+		log2.close();
+		if(config != null) {
+			config.set("radMultip", radMultip);
+			config.set("recoveryRate", recoveryRate);
+			config.set("maxPen", maxPen);
+			config.set("protLvl", protLvl);
+			config.set("dmgEnb", dmgEnb);
+			config.set("dissabled", dissabled);
+			ConfigurationSection cS = config.createSection("radPlayers");
+	
+			for (Entry<String, RadPlayer> entry : radPlayers.entrySet() ) {
+				ConfigurationSection cSp = cS.createSection(entry.getKey());
+				cSp.set("lvl", entry.getValue().lvl);
+				cSp.set("enb", entry.getValue().enb);
+			}
+			if(enableSave) {
+				try {
+					config.save(worldConfigFile);
+				} catch (IOException e) {
+					log.warning("Couldn't save configuration file " + worldName + ".yml");
+				}
+			} else {
+				log.info("RadWorld Dissabled, did not save configuration file");
 			}
 		} else {
-			log.info("RadWorld Dissabled, did not save configuration file");
+			log.warning("Configuration file null, failed to save");
 		}
 //		saveConfig();
+	}
+	
+	public void log(String msg) {
+		log2.println(msg);
+		log2.flush();
 	}
 	
 	private void updateRad(int s) {
@@ -205,21 +222,29 @@ public class Main extends JavaPlugin {
 						if(pI.getBoots().getType() != Material.NETHERITE_BOOTS) {
 							prot = false;
 						}
+					} else {
+						prot = false;
 					}
 					if(pI.getLeggings() != null) {
 						if(pI.getLeggings().getType() != Material.NETHERITE_LEGGINGS) {
 							prot = false;
 						}
+					} else {
+						prot = false;
 					}
 					if(pI.getChestplate() != null) {
 						if(pI.getChestplate().getType() != Material.NETHERITE_CHESTPLATE) {
 							prot = false;
 						}
+					} else {
+						prot = false;
 					}
 					if(pI.getHelmet() != null) {
 						if(pI.getHelmet().getType() != Material.NETHERITE_HELMET) {
 							prot = false;
 						}
+					} else {
+						prot = false;
 					}
 					rp.prot = prot;
 					
@@ -227,7 +252,7 @@ public class Main extends JavaPlugin {
 					
 			}
 		} catch (Exception er) {
-			File f = new File(dataFolder, "MainErroLog.log");
+			File f = new File(dataFolder, "MainErrorLog.log");
 			PrintStream ps;
 			try {
 				ps = new PrintStream(f);
@@ -430,25 +455,27 @@ public class Main extends JavaPlugin {
 		return config;
 	}
 	
-	public void reloadConfig() {
-		config = getConfig();
-		
-		worldConfigFile = new File(dataFolder, worldName + ".yml");
-		if(worldConfigFile.exists()) {
-			config = YamlConfiguration.loadConfiguration(worldConfigFile);
-			enableSave = true;
-		} else {
-			log.info("Config for world " + worldName + " didn't exist, if enbaled, one will be created on plugin dissable");
-		}
-		
+	public void reloadConfigFile() {
 		try {
-			Reader defConfigStream = new InputStreamReader(this.getResource("config.yml"), "UTF8");
-		    if (defConfigStream != null) {
-		        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-		        config.setDefaults(defConfig);
-		    }
-		} catch (UnsupportedEncodingException e) {
-			log.warning("Failed to load default config");
+			config = getConfig();
+			
+			worldConfigFile = new File(dataFolder, worldName + ".yml");
+			if(worldConfigFile.exists()) {
+				config = YamlConfiguration.loadConfiguration(worldConfigFile);
+				enableSave = true;
+			} else {
+				log.info("Config for world " + worldName + " didn't exist, if enbaled, one will be created on plugin enable");
+			}
+			
+			try {
+				Reader defConfigStream = new InputStreamReader(this.getResource("config.yml"), "UTF8");
+			    if (defConfigStream != null) {
+			        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+			        config.setDefaults(defConfig);
+			    }
+			} catch (UnsupportedEncodingException e) {
+				log.warning("Failed to load default config");
+			}
 		} catch (Exception e) {
 			File f = new File(dataFolder, "MainErrorLog.log");
 			PrintStream ps;
