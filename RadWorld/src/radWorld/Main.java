@@ -123,6 +123,10 @@ public class Main extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		log2.close();
+		saveWorldConfig();
+	}
+	
+	public void saveWorldConfig() {
 		if(config != null) {
 			config.set("radMultip", radMultip);
 			config.set("recoveryRate", recoveryRate);
@@ -149,7 +153,6 @@ public class Main extends JavaPlugin {
 		} else {
 			log.warning("Configuration file null, failed to save");
 		}
-//		saveConfig();
 	}
 	
 	public void log(String msg) {
@@ -445,6 +448,7 @@ public class Main extends JavaPlugin {
 		if(!b) {
 			updateRad(0);
 			enableSave = true;
+			saveWorldConfig();
 		}
 	}
 	
