@@ -56,6 +56,7 @@ public class Main extends JavaPlugin {
 	private boolean dmgEnb = false;
 	private boolean dissabled = true;
 	private boolean enableSave = false;
+	private float tps = 20;
 	
 	public File dataFolder;
 	
@@ -271,7 +272,7 @@ public class Main extends JavaPlugin {
 					 updateRad(s2);
 				 }
 				 
-			 }, 5);
+			 }, (long) (tps/4));
 		}
 			
 	}

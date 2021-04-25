@@ -39,15 +39,17 @@ public Main main;
 				Location l2 = new Location(l.getWorld(), l.getX(), i, l.getZ());
 				Block b = l2.getBlock();
 				Material t = b.getType();
-				if(!b.isPassable()) {
-					if(cS != null) {
-						if(cS.contains(t + "")) {
-							rads -= cS.getInt(t + "");
-						} else {
-							main.log(t + "");
+				if(cS != null) {
+					if(cS.contains(t + "")) {
+						rads -= cS.getInt(t + "");
+					} else {
+						main.log(t + "");
+						if(!b.isPassable()) {
 							rads--;
 						}
-					} else {
+					}
+				} else {
+					if(!b.isPassable()) {
 						rads--;
 					}
 				}
