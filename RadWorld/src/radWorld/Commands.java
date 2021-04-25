@@ -23,15 +23,19 @@ public class Commands implements CommandExecutor {
 //		Player p = sender.
 		try {
 			if(args.length > 0) {
-				if(args[0].equals("disable") ) {
-					if(args.length == 2) {
-						boolean v = Boolean.parseBoolean(args[1]);
-						main.setDissabled(v);
-						if(v) {
-							sender.sendMessage("Rad World dissabled");
-						} else {
-							sender.sendMessage("Rad World enabled");
-						}
+				if(args[0].equals("dissable") ) {
+					if(args.length == 1) {
+						main.setDissabled(true);
+						sender.sendMessage("Rad World dissabled");
+						return true;
+					} else {
+						sender.sendMessage("Incorrect number of arguments");
+						return false;
+					}
+				} else if(args[0].equals("enable") ) {
+					if(args.length == 1) {
+						main.setDissabled(false);
+						sender.sendMessage("Rad World enabled");
 						return true;
 					} else {
 						sender.sendMessage("Incorrect number of arguments");
@@ -132,7 +136,7 @@ public class Commands implements CommandExecutor {
 								return false;
 							}
 						} else {
-							sender.sendMessage("Invalid second argument | add, remove, level, set, enalbed");
+							sender.sendMessage("Invalid second argument | add, remove, level, set, enable, dissable");
 							return false;
 						}
 					} else {

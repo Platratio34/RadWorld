@@ -26,7 +26,8 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
 			if(args.length == 1) {
 				l.add("player");
 				l.add("global");
-				l.add("disable");
+				l.add("dissable");
+				l.add("enable");
 				l.add("version");
 				l.add("reload");
 				return fix(l, args[args.length - 1]);
@@ -43,10 +44,6 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
 					l.add("recovery");
 					l.add("radMultip");
 					l.add("armorProt");
-					return fix(l, args[args.length - 1]);
-				} else if(args[0].equals("disable")) {
-					l.add("true");
-					l.add("false");
 					return fix(l, args[args.length - 1]);
 				}
 			} else if(args.length == 3) {
