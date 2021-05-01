@@ -50,8 +50,19 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
 				if(args[0].equals("player")) {
 					if(args[1].equals("add") ) {
 						for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-				            l.add(p.getName());
+							String str = p.getName();
+							if(!main.getPlayers().contains(str)) {
+								l.add(str);
+							}
 				        }
+					} else if(args[1].equals("enabled")) {
+						l.add("true");
+						l.add("false");
+					} else if(args[1].equals("set")) {
+						int m = main.getMaxAccRad();
+						for(int i = 0; i < m; i++) {
+							l.add(i + "");
+						}
 					} else {
 						for (String str : main.getPlayers()) {
 							l.add(str);

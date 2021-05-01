@@ -493,4 +493,8 @@ public class Main extends JavaPlugin {
 			}
 		}
 	}
+
+	public int getMaxAccRad() {
+		return maxPen * maxPen * 2;
+	}
 }
