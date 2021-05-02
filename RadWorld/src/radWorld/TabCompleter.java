@@ -58,11 +58,11 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
 					} else if(args[1].equals("enabled")) {
 						l.add("true");
 						l.add("false");
-					} else if(args[1].equals("set")) {
-						int m = main.getMaxAccRad();
-						for(int i = 0; i < m; i++) {
-							l.add(i + "");
-						}
+//					} else if(args[1].equals("set")) {
+//						int m = main.getMaxAccRad();
+//						for(int i = 0; i < m; i++) {
+//							l.add(i + "");
+//						}
 					} else {
 						for (String str : main.getPlayers()) {
 							l.add(str);
