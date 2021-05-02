@@ -6,5 +6,6 @@ dmgEnb: false
 changedblocks:
     WATER: 2
     LAVA: 2
+    GLASS: 1
     NETHERITE_BLOCK: 5
     IRON_BLOCK: 3
