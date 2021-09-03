@@ -67,7 +67,7 @@ public Main main;
 				main.removeRad(p);
 			}
 		} catch (Exception er) {
-			File f = new File(main.dataFolder, "RadEventsErroLog.log");
+			File f = new File(main.dataFolder, "RadEventsErrorLog.log");
 			PrintStream ps;
 			try {
 				ps = new PrintStream(f);

@@ -101,9 +101,14 @@ public class Main extends JavaPlugin {
 		scheduler = this.getServer().getScheduler();
 		pdf = this.getDescription();
 		if(pdf.getVersion().contains("-Dev")) {
+//			System.out.println(WARNSEQ + "You are running a dev version of this plugin");
 			log.warning("You are running a dev version of this plugin");
 			dev = true;
 		}
+		if(!Bukkit.getVersion().contains(pdf.getAPIVersion())) {
+			log.warning("You are running a unsuported server version, check for a new version for you server. (Server:" + Bukkit.getVersion() + ", Plugin:" + pdf.getAPIVersion() + ")");
+		}
+		
 		PluginManager pm = Bukkit.getServer().getPluginManager();
 		com = new Commands(this);
 		pm.registerEvents(new RadEvents(this), this);
