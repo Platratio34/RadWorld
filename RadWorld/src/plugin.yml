@@ -6,3 +6,4 @@ author: Platratio34
 commands:
   rads:
     usage: /rads player <add|remove|level|set|enabled> [player] {arg} | /rads global <damage|recovery|radMultip> [value] | /rads disable <true|false> | /rads version | /rads reload
+    descrition: The primary command for interacting with RadWorld
