@@ -21,7 +21,14 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command com, String lable, String[] args) {
+		Player p = null;
+		if(sender instanceof Player) {
+			p = (Player)sender;
+		}
 		List<String> l = new ArrayList<String>();
+		if(p != null && !p.hasPermission("rads.admin")) {
+			return l;
+		}
 		try {
 			if(args.length == 1) {
 				l.add("player");
@@ -30,6 +37,7 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
 				l.add("enable");
 				l.add("version");
 				l.add("reload");
+				l.add("help");
 				return fix(l, args[args.length - 1]);
 			} else if(args.length == 2) {
 				if(args[0].equals("player")) {
@@ -49,8 +57,8 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
 			} else if(args.length == 3) {
 				if(args[0].equals("player")) {
 					if(args[1].equals("add")) {
-						for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-							String str = p.getName();
+						for (Player p2 : Bukkit.getServer().getOnlinePlayers()) {
+							String str = p2.getName();
 							if(!main.getPlayers().contains(str)) {
 								l.add(str);
 							}

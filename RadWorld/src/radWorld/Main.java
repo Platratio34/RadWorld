@@ -208,9 +208,6 @@ public class Main extends JavaPlugin {
 						rp.setDim(1);
 					} else {
 						rp.setDim(0);
-					}
-					if(!(p.getWorld().getName().contains("_nether") || p.getWorld().getName().contains("_the_end") ) ) {
-						rp.setDim(0);
 						if(s == 0 || s == 4) {
 							if(dps == 0.5) {
 								if(s == 0) {
@@ -220,16 +217,10 @@ public class Main extends JavaPlugin {
 								damgePlayer(p,dps);
 							}
 						}
-						if(!rp.prot) {
+						if(!rp.prot && rp.enb) {
 							p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText( radLvs[(int) rp.inc] + "  | " + dps + " |  " + radLvs2[(int) Math.min(Math.ceil(rp.lvl / (2 * maxPen) ), radLvs2.length-1 ) ] + " | " + (int)(rp.inc * radMultip) + " r/s | " + (int)rp.lvl + " rads" ) );
 						} else if(rp.enb) {
 							p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText( radLvsb[(int) rp.inc] + "  | " + dps + " |  " + radLvs2[(int) Math.min(Math.ceil(rp.lvl / (2 * maxPen) ), radLvs2.length-1 ) ] + " | " + (int)(Math.max(rp.inc - (maxPen / (1/protLvl)), 0f)  * radMultip) + " r/s | " + (int)rp.lvl + " rads" ) );
-						}
-					} else {
-						if(p.getWorld().getName().contains("_nether")) {
-							rp.setDim(-1);
-						} else {
-							rp.setDim(1);
 						}
 					}
 					

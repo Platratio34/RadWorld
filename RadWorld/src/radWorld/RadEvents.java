@@ -30,7 +30,7 @@ public Main main;
 			Player p = e.getPlayer();
 			RadPlayer rp = main.getRadPlayer(p);
 			if(rp != null) {
-				if(rp.getDim() == 0) {
+				if(rp.getDim() != 0) {
 					main.removeRad(p);
 					return;
 				}

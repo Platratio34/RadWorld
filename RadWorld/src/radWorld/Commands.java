@@ -22,8 +22,10 @@ public class Commands implements CommandExecutor {
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command com, String lable, String[] args) {
-		Player p = (Player)sender;
-		// TODO Add decriptive help, permsions
+		Player p = null;
+		if(sender instanceof Player) {
+			p = (Player)sender;
+		}
 		if(p != null && !p.hasPermission("rads.admin")) {
 			sender.sendMessage(ChatColor.RED + "You are not alowed to use this command. If you belive this to be in error, contact your server administrator and ask to have permesion: 'rads.admin'");
 			return false;
@@ -202,6 +204,7 @@ public class Commands implements CommandExecutor {
 					sender.sendMessage(" - armorProt: amount of protection from armor, defaults to 0.8");
 					sender.sendMessage("To set a global option run:" + ChatColor.DARK_BLUE + " /rads global [option] [value]");
 					sender.sendMessage("To veiw the version of the plugin run:" + ChatColor.DARK_BLUE + " /rads version");
+					return true;
 				} else {
 					sender.sendMessage(ChatColor.RED + "Invlaid first argument | help, player, global, version, reload");
 					return false;
