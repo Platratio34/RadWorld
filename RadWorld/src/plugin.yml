@@ -1,9 +1,13 @@
 main: radWorld.Main
 name: RadWorld
-version: 0.4-Dev
+version: 0.4-Dev2
 api-version: 1.17
 author: Platratio34
 commands:
   rads:
-    usage: /rads player <add|remove|level|set|enabled> [player] {arg} | /rads global <damage|recovery|radMultip> [value] | /rads disable <true|false> | /rads version | /rads reload
-    descrition: The primary command for interacting with RadWorld
+    usage: /rads help | /rads player <add|remove|level|set|enabled> [player] {arg} | /rads global <damage|recovery|radMultip|armorProt> [value] | /rads dissable | /rads enable | /rads version | /rads reload
+    description: The primary command for interacting with RadWorld. Use /rads help for more information
+permissions:
+  rads.admin:
+    description: Allows usage of RadWorld commands
+    default: op
