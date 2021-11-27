@@ -48,16 +48,13 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
 				}
 			} else if(args.length == 3) {
 				if(args[0].equals("player")) {
-					if(args[1].equals("add") ) {
+					if(args[1].equals("add")) {
 						for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 							String str = p.getName();
 							if(!main.getPlayers().contains(str)) {
 								l.add(str);
 							}
 				        }
-					} else if(args[1].equals("enabled")) {
-						l.add("true");
-						l.add("false");
 //					} else if(args[1].equals("set")) {
 //						int m = main.getMaxAccRad();
 //						for(int i = 0; i < m; i++) {
@@ -73,6 +70,11 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
 					l.add("true");
 					l.add("false");
 					return fix(l, args[args.length - 1]);
+				}
+			} else if(args.length == 4) {
+				if(args[0].equals("player") && args[1].equals("enabled")) {
+					l.add("true");
+					l.add("false");
 				}
 			}
 		} catch (Exception e) {

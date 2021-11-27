@@ -28,43 +28,50 @@ public Main main;
 	public void onPlayerMove(PlayerMoveEvent e) {
 		try {
 			Player p = e.getPlayer();
-			Location l = p.getLocation();
-			int rads = main.maxPen;
-			FileConfiguration config = main.getWorldConfig();
-			ConfigurationSection cS = null;
-			if(config.contains("changedblocks")) {
-				cS = config.getConfigurationSection("changedblocks");
-			}
-			for(int i = l.getBlockY() + 2; i < l.getBlockY() + 100; i++) {
-				Location l2 = new Location(l.getWorld(), l.getX(), i, l.getZ());
-				Block b = l2.getBlock();
-				Material t = b.getType();
-				if(cS != null) {
-					if(cS.contains(t + "")) {
-						rads -= cS.getInt(t + "");
+			RadPlayer rp = main.getRadPlayer(p);
+			if(rp != null) {
+				if(rp.getDim() == 0) {
+					main.removeRad(p);
+					return;
+				}
+				Location l = p.getLocation();
+				int rads = main.maxPen;
+				FileConfiguration config = main.getWorldConfig();
+				ConfigurationSection cS = null;
+				if(config.contains("changedblocks")) {
+					cS = config.getConfigurationSection("changedblocks");
+				}
+				for(int i = l.getBlockY() + 2; i < l.getBlockY() + 100; i++) {
+					Location l2 = new Location(l.getWorld(), l.getX(), i, l.getZ());
+					Block b = l2.getBlock();
+					Material t = b.getType();
+					if(cS != null) {
+						if(cS.contains(t + "")) {
+							rads -= cS.getInt(t + "");
+						} else {
+							main.log(t + "");
+							if(!b.isPassable()) {
+								rads--;
+							}
+						}
 					} else {
-						main.log(t + "");
 						if(!b.isPassable()) {
 							rads--;
 						}
 					}
-				} else {
-					if(!b.isPassable()) {
-						rads--;
-					}
 				}
-			}
-	
-			float sunlight_level = l.getBlock().getLightFromSky();
-			sunlight_level /= 15;
-			sunlight_level *= main.maxPen;
-			
-			rads = Math.max(rads, (int)sunlight_level);
-			
-			if(rads > 0) {
-				main.addRad(p, rads);
-			} else {
-				main.removeRad(p);
+		
+				float sunlight_level = l.getBlock().getLightFromSky();
+				sunlight_level /= 15;
+				sunlight_level *= main.maxPen;
+				
+				rads = Math.max(rads, (int)sunlight_level);
+				
+				if(rads > 0) {
+					main.addRad(p, rads);
+				} else {
+					main.removeRad(p);
+				}
 			}
 		} catch (Exception er) {
 			File f = new File(main.dataFolder, "RadEventsErrorLog.log");

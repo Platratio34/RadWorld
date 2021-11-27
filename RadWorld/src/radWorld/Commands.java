@@ -21,6 +21,7 @@ public class Commands implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command com, String lable, String[] args) {
 //		Player p = sender.
+		// TODO Add decriptive help, permsions
 		try {
 			if(args.length > 0) {
 				if(args[0].equals("dissable") ) {
