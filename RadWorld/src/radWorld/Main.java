@@ -70,7 +70,7 @@ public class Main extends JavaPlugin {
 		dataFolder = getDataFolder();
 		log = super.getLogger();
 		try {
-			log2 = new PrintStream(new File(dataFolder + "log.log"));
+			log2 = new PrintStream(new File(dataFolder + "/log.log"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
