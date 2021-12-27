@@ -49,7 +49,7 @@ public Main main;
 						if(cS.contains(t + "")) {
 							rads -= cS.getInt(t + "");
 						} else {
-							main.log(t + "");
+							main.debugLog(t + "");
 							if(!b.isPassable()) {
 								rads--;
 							}

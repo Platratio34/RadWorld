@@ -193,16 +193,16 @@ public class Commands implements CommandExecutor {
 				} else if(args[0].equals("help")) {
 					sender.sendMessage(ChatColor.GREEN + "Displaying help for Rad World");
 					sender.sendMessage("To enable radiaiton, run:" + ChatColor.DARK_BLUE + " /rads enable" + ChatColor.RESET + ". To disable:" + ChatColor.DARK_BLUE + " /rads disable");
-					sender.sendMessage("For players to recive radaiont they must be added. To add a player run:" + ChatColor.DARK_BLUE + " /rads player add [player name]" + ChatColor.RESET + ". To Remove:" + ChatColor.DARK_BLUE + " /rads player remove [player name]");
-					sender.sendMessage("To disable radiaiton aclumation for a spesific player, run:" + ChatColor.DARK_BLUE + " /rads player enabled [player name] false" + ChatColor.RESET + ". To re-enable it:" + ChatColor.DARK_BLUE + " /rads player enabled [player name]");
-					sender.sendMessage("To sent the total exposure for a player run:" + ChatColor.DARK_BLUE + " /rads player set [player name] [level]");
-					sender.sendMessage("To veiw the current exposure and total exposure for a player run:" + ChatColor.DARK_BLUE + " /rads player level [player name]");
+					sender.sendMessage("For players to recive radaiont they must be added. To add a player run:" + ChatColor.DARK_BLUE + " /rads player add [<player name>" + ChatColor.RESET + ". To Remove:" + ChatColor.DARK_BLUE + " /rads player remove <player name>");
+					sender.sendMessage("To disable radiaiton aclumation for a spesific player, run:" + ChatColor.DARK_BLUE + " /rads player enabled <player name> false" + ChatColor.RESET + ". To re-enable it:" + ChatColor.DARK_BLUE + " /rads player enabled <player name>");
+					sender.sendMessage("To sent the total exposure for a player run:" + ChatColor.DARK_BLUE + " /rads player set <player name> <level>");
+					sender.sendMessage("To veiw the current exposure and total exposure for a player run:" + ChatColor.DARK_BLUE + " /rads player level <player name>");
 					sender.sendMessage("The global options are: ");
 					sender.sendMessage(" - damage: damage enabled, defaults to false");
 					sender.sendMessage(" - recovery: recovery rate, defaults 120 rads/s");
 					sender.sendMessage(" - radMultip: radiation multiplyer, defaults to 1");
 					sender.sendMessage(" - armorProt: amount of protection from armor, defaults to 0.8");
-					sender.sendMessage("To set a global option run:" + ChatColor.DARK_BLUE + " /rads global [option] [value]");
+					sender.sendMessage("To set a global option run:" + ChatColor.DARK_BLUE + " /rads global <option> <value>");
 					sender.sendMessage("To veiw the version of the plugin run:" + ChatColor.DARK_BLUE + " /rads version");
 					return true;
 				} else {

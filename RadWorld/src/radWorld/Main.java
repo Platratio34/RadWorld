@@ -63,6 +63,8 @@ public class Main extends JavaPlugin {
 	private String worldName;
 	File worldConfigFile;
 	
+	public boolean debug = false;
+	
 	@Override
 	public void onEnable() {
 		dataFolder = getDataFolder();
@@ -163,6 +165,12 @@ public class Main extends JavaPlugin {
 	public void log(String msg) {
 		log2.println(msg);
 		log2.flush();
+	}
+	public void debugLog(String msg) {
+		if(debug) {
+			log2.println(msg);
+			log2.flush();
+		}
 	}
 	
 	private void updateRad(int s) {
